@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Setup Routes
-const items = require("./routes/api/itemsRouter");
+const userRoute = require("./routes/api/userRouter");
+const itemRoute = require("./routes/api/itemsRouter");
 
 mongoose
     .connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -16,7 +17,8 @@ mongoose
 // Setup body-parser
 app.use(express.json());
 
-// Use Routes
-app.use("/api/items", items);
+// Routes Middleware
+app.use("/api/items", itemRoute);
+app.use("/api/user", userRoute);
 
 app.listen(PORT, () => console.log(`Listening on port, ${PORT}.`));
