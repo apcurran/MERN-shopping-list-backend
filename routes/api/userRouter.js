@@ -5,9 +5,21 @@ const router = express.Router();
 // User model
 const User = require("../../models/User");
 const bcrypt = require("bcrypt");
+const { registerValidation, loginValidation } = require("../../validation/validation");
 
 router.post("/register", async (req, res, next) => {
-    // TODO Add validation
+    // Validation
+    try {
+        const { error } = await registerValidation(req.body);
+
+        if (error) {
+            return res.status(400).json({
+                error: error.details[0].message
+            });   
+        }
+    } catch (err) {
+        console.error(err);
+    }
 
     // Check if user is in the db
     const emailExists = await User.findOne({ email: req.body.email });
@@ -34,7 +46,7 @@ router.post("/register", async (req, res, next) => {
 
         res.status(201).json({
             message: "New user registered",
-            savedUser
+            user: user._id
         });
     } catch (err) {
         console.error(err);
