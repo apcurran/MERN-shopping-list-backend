@@ -14,7 +14,7 @@ function registerValidation(data) {
             .required()
     });
 
-    return schema.validate(data);
+    return schema.validateAsync(data);
 }
 
 function loginValidation(data) {
@@ -28,7 +28,7 @@ function loginValidation(data) {
             .required()
     });
 
-    return schema.validate(data);
+    return schema.validateAsync(data);
 }
 
 module.exports.registerValidation = registerValidation;

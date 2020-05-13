@@ -10,15 +10,11 @@ const { registerValidation, loginValidation } = require("../../validation/valida
 router.post("/register", async (req, res, next) => {
     // Validation
     try {
-        const { error } = await registerValidation(req.body);
-
-        if (error) {
-            return res.status(400).json({
-                error: error.details[0].message
-            });   
-        }
-    } catch (err) {
-        console.error(err);
+        await registerValidation(req.body);
+    } catch (error) {
+        return res.status(400).json({
+            error: error.details[0].message
+        });
     }
 
     // Check if user is in the db
