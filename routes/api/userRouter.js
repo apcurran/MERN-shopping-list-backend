@@ -6,9 +6,9 @@ const router = express.Router();
 const User = require("../../models/User");
 const bcrypt = require("bcrypt");
 const { registerValidation, loginValidation } = require("../../validation/validation");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res, next) => {
-    // Validation
     try {
         await registerValidation(req.body);
     } catch (error) {
@@ -17,8 +17,8 @@ router.post("/register", async (req, res, next) => {
         });
     }
 
-    // Check if user is in the db
     try {
+        // Check if user is in the db
         const emailExists = await User.findOne({ email: req.body.email });
     
         if (emailExists) {
@@ -60,7 +60,6 @@ router.post("/register", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-    // Validation
     try {
         await loginValidation(req.body);
     } catch (error) {
@@ -69,8 +68,8 @@ router.post("/login", async (req, res, next) => {
         });
     }
 
-    // Check if email exists
     try {
+        // Check if email exists
         const user = await User.findOne({ email: req.body.email });
     
         if (!user) {
@@ -88,9 +87,11 @@ router.post("/login", async (req, res, next) => {
             });
         }
 
-        res.status(200).json({
-            message: "Logged in!"
-        });
+        // Create and assign a token
+        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+
+        res.header("authorization", `Bearer ${token}`).json(token);
+
     } catch (err) {
         console.error(err);
         res.status(400).json({
