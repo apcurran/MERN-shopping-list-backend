@@ -13,7 +13,7 @@ router.post("/register", async (req, res, next) => {
         await registerValidation(req.body);
     } catch (error) {
         return res.status(400).json({
-            error: error.details[0].message
+            message: error.details[0].message
         });
     }
 
@@ -52,7 +52,7 @@ router.post("/register", async (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(400).json({
-            error: err
+            message: err
         });
 
         next(err);
@@ -64,7 +64,7 @@ router.post("/login", async (req, res, next) => {
         await loginValidation(req.body);
     } catch (error) {
         return res.status(400).json({
-            error: error.details[0].message
+            message: error.details[0].message
         });
     }
 
@@ -83,7 +83,7 @@ router.post("/login", async (req, res, next) => {
 
         if (!validPassword) {
             return res.status(400).json({
-                error: "Invalid password"
+                message: "Invalid password"
             });
         }
 
@@ -95,7 +95,7 @@ router.post("/login", async (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(400).json({
-            error: err
+            message: err
         });
 
         next(err);
