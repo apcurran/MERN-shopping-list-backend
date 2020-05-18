@@ -11,7 +11,7 @@ const verifyAuth = require("../../middleware/verifyAuth");
 // access: Private (only authorized users)
 router.get("/", verifyAuth, async (req, res, next) => {
     try {
-        const items = await Item.find().sort({ date: -1 });
+        const items = await Item.find({ user_id: req.user._id }).sort({ date: -1 });
         
         res.status(200).json(items);
     } catch (err) {
@@ -29,6 +29,7 @@ router.get("/", verifyAuth, async (req, res, next) => {
 router.post("/", verifyAuth, async (req, res, next) => {
     try {
         const newItem = new Item({
+            user_id: req.user._id,
             name: req.body.name
         });
         const savedItem = await newItem.save();

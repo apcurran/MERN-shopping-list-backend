@@ -18,7 +18,7 @@ mongoose
 app.use(express.json());
 
 // Routes Middleware
-app.use("/api/items", itemRoute);
+app.use("/api/user/items", itemRoute);
 app.use("/api/user", userRoute);
 
 app.listen(PORT, () => console.log(`Listening on port, ${PORT}.`));
