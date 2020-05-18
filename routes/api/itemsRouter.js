@@ -4,11 +4,12 @@ const express = require("express");
 const router = express.Router();
 // Item Model
 const Item = require("../../models/Item");
+const verifyAuth = require("../../middleware/verifyAuth");
 
 // route: GET api/items
 // desc: Get all items
-// access: Public
-router.get("/", async (req, res, next) => {
+// access: Private (only authorized users)
+router.get("/", verifyAuth, async (req, res, next) => {
     try {
         const items = await Item.find().sort({ date: -1 });
         
@@ -24,8 +25,8 @@ router.get("/", async (req, res, next) => {
 
 // route: POST api/items
 // desc: Create an item
-// access: Public
-router.post("/", async (req, res, next) => {
+// access: Private
+router.post("/", verifyAuth, async (req, res, next) => {
     try {
         const newItem = new Item({
             name: req.body.name
@@ -44,8 +45,8 @@ router.post("/", async (req, res, next) => {
 
 // route: DELETE api/items/:id
 // desc: Delete an item
-// access: Public
-router.delete("/:id", async (req, res, next) => {
+// access: Private
+router.delete("/:id", verifyAuth, async (req, res, next) => {
     try {
         const item = await Item.findById(req.params.id);
         const removedItem = await item.remove();
