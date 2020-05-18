@@ -6,7 +6,7 @@ const router = express.Router();
 const Item = require("../../models/Item");
 const verifyAuth = require("../../middleware/verifyAuth");
 
-// route: GET api/items
+// route: GET api/user/items
 // desc: Get all items
 // access: Private (only authorized users)
 router.get("/", verifyAuth, async (req, res, next) => {
@@ -23,7 +23,7 @@ router.get("/", verifyAuth, async (req, res, next) => {
     }
 });
 
-// route: POST api/items
+// route: POST api/user/items
 // desc: Create an item
 // access: Private
 router.post("/", verifyAuth, async (req, res, next) => {
@@ -44,13 +44,13 @@ router.post("/", verifyAuth, async (req, res, next) => {
     }
 });
 
-// route: DELETE api/items/:id
+// route: DELETE api/user/items/:id
 // desc: Delete an item
 // access: Private
 router.delete("/:id", verifyAuth, async (req, res, next) => {
     try {
         const item = await Item.findById(req.params.id);
-        const removedItem = await item.remove();
+        await item.remove();
 
         res.status(200).json({ success: true });
     } catch (err) {
