@@ -13,7 +13,7 @@ router.post("/register", async (req, res, next) => {
         await registerValidation(req.body);
     } catch (error) {
         return res.status(400).json({
-            message: error.details[0].message
+            error: error.details[0].message
         });
     }
 
@@ -23,7 +23,7 @@ router.post("/register", async (req, res, next) => {
     
         if (emailExists) {
             return res.status(400).json({
-                message: "Email already exists."
+                error: "Email already exists."
             });
         }
     } catch (err) {
@@ -52,7 +52,7 @@ router.post("/register", async (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(400).json({
-            message: err
+            error: err
         });
 
         next(err);
@@ -64,7 +64,7 @@ router.post("/login", async (req, res, next) => {
         await loginValidation(req.body);
     } catch (error) {
         return res.status(400).json({
-            message: error.details[0].message
+            error: error.details[0].message
         });
     }
 
@@ -74,7 +74,7 @@ router.post("/login", async (req, res, next) => {
     
         if (!user) {
             return res.status(400).json({
-                message: "Email is not found"
+                error: "Email is not found"
             });
         }
 
@@ -83,7 +83,7 @@ router.post("/login", async (req, res, next) => {
 
         if (!validPassword) {
             return res.status(400).json({
-                message: "Invalid password"
+                error: "Invalid password"
             });
         }
 
@@ -95,7 +95,7 @@ router.post("/login", async (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(400).json({
-            message: err
+            error: err
         });
 
         next(err);
